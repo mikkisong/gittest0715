@@ -109,19 +109,42 @@
 					onclick="location.href='fcontent.jsp?num=<%=bb.getNum()%>&pageNum=<%=pageNum%>'">
 					<td><%=num--%></td>
 					<%
-						if (bb.getFile().contains(".jpg") || bb.getFile().contains(".png") || (bb.getFile().contains(".gif"))) {
+						if (bb.getFile()==null) {
 					%>
-					<td class="center"><img src="../upload/<%=bb.getFile()%>"
-						width="100" height="100"></td>
+						<td class="center"><img src="../upload/text.png" width="45"
+						height="45"></td>
 					<%
-						} else {
+						} else if(bb.getFile().contains(".jpg") || bb.getFile().contains(".png") || (bb.getFile().contains(".gif"))){ 
+						%>
+						
+						
+							<td class="center"><img src="../upload/<%=bb.getFile()%>"
+						width="100" height="100"></td>
+						
+						<%
+						}
+						else {
 					%>
 					<td class="center"><img src="../upload/file.png" width="50"
 						height="50"></td>
 					<%
 						}
 					%>
-					<td class="left"><%=bb.getSubject()%></td>
+					<td class="left">
+					
+					<%
+					     int wid = 0;
+					     if(bb.getRe_lev()>0){
+					    	 wid = bb.getRe_lev()*10;
+					     %>
+					     <img src="level.gif" width="<%=wid%>" height="10">
+					     <img src="re.gif">
+					     <%
+					     }
+					     %>
+					
+					
+					<%=bb.getSubject()%></td>
 					<td><%=bb.getName()%></td>
 					<td><%=sdf.format(bb.getDate())%></td>
 					<td><%=bb.getReadcount()%></td>

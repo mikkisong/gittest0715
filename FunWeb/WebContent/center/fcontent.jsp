@@ -93,6 +93,8 @@ if(bb.getFile()!=null){
 %>
 <tr><td class="twrite">내용</td><td colspan="3"><%=bb.getContent() %></td></tr>
 </table>
+
+
 <div id="table_search">
 <%
 String id = (String)session.getAttribute("id");
@@ -101,13 +103,17 @@ if(id!=null){
 	%>
 	<input type="button" value="글수정" class="btn" 
  	onclick="location.href='fupdateForm.jsp?num=<%=num%>&pageNum=<%=pageNum%>'">
- 	<input type="button" value="글삭제" class="btn" 
-	 onclick="del()">
+ 	<input type="button" value="글삭제" class="btn" onclick="del()">
 	<%	
 	}
 }
 
 %>
+<input type="button" value="답글쓰기" class="btn" 
+ onclick="location.href='reWriteForm.jsp?num=<%=num%>&re_ref=<%=bb.getRe_ref()%>&re_lev=<%=bb.getRe_lev()%>&re_seq=<%=bb.getRe_seq()%>'">
+<input type="button" value="글목록" class="btn" 
+ onclick="location.href='fnotice.jsp?pageNum=<%=pageNum%>'">
+</div>
 <script type="text/javascript">
 function del(){
 	 if (confirm("정말 삭제하시겠습니까??") == true){    //확인
@@ -130,86 +136,13 @@ function commcheck(){
 	}
 }
 </script>
-<input type="button" value="글목록" class="btn" 
- onclick="location.href='fnotice.jsp?pageNum=<%=pageNum%>'">
-</div>
+
+
+
+
 <div class="clear"></div>
 
 
-<div id="comment">
-
-
-<%
-if(id!=null){
-	
-	%>
-	<!-- 댓글달기  -->
-<form action="comment.jsp?num=<%=num %>&pageNum=<%=pageNum %>" method="get" name="comm1" onsubmit="return commcheck()">
-<input type="hidden" name="num" value="<%=num%>">
-<table class="commentWrite">
-<tr><td><%=bb.getName() %> : <input type="hidden" name="id" value=<%=bb.getName() %> readonly="readonly"></td>
-<td><textarea name="content" rows="1" cols="30" onclick="this.value=''">(150자)</textarea>
-<input type="hidden" name="parent_num" value=<%=bb.getNum() %>>
-<input type="submit" value="댓글등록" class="btn"></td></tr>
-</table>
-</form>
-	<%
-}
-%>
-
-<!-- // 댓글 출력  -->
-<!-- CommentDAO cdao = new CommentDAO(); -->
-<!-- CommentBean cb = new CommentBean(); -->
-<!-- ResultSet rs = cdao.selectComment(); -->
-<!-- while(rs.next()){ -->
-<%-- <form action="commentDelete.jsp?num=<%=num %>&pageNum=<%=pageNum %>" method="get" name="comm2"> --%>
-<!-- <table> -->
-<%-- <tr><td><input type="text" name="id2" value=<%=rs.getString("id") %> readonly="readonly"></td> --%>
-<%-- <td><textarea name="comment" rows="1" cols="50"><%=rs.getString("comment") %></textarea> --%>
-<%-- <input type="hidden" name="parent" value=<%=rs.getInt("parent") %>> --%>
-<!-- <input type="submit" value="댓글삭제" class="btn"></td></tr> -->
-<%-- <tr><td><%=rs.getTimestamp("date") %></td></tr> --%>
-<!-- </table> -->
-<!-- </form> -->
-<!-- } -->
-
-
-
-<% 
-CommentDAO cdao = new CommentDAO();
-List<CommentBean> commentList =cdao.getCommentList(bb.getNum());
-SimpleDateFormat sdf=new SimpleDateFormat("yyyy.MM.dd");
-int count = commentList.size();
-int idx = 0;
-
-%>
-contentNum: <%=bb.getNum() %>
-count: <%=count %>
-<table id="comment">
-<tr>
-	<th class="commIdx">No.</th>
-    <th class="twrite">ID</th>
-    <th class="date">Date</th>
-    <th class="tcomment">Comment</th>
-    <th> </th></tr>
-    <%
-    for(int i=0;i<commentList.size();i++){
-    	CommentBean cb2=commentList.get(i);
-    	idx = cb2.getIdx();
-    	%>
-<tr>
-	<td><input type="hidden" name="idx" value="<%=idx%>"><%=i+1 %></td>
-    <td class="center"><%=cb2.getId() %></td>
-    <td><%=sdf.format(cb2.getDate()) %></td>
-    <td><%=cb2.getContent() %></td> 	
-    <td><input type="button" value="x" name="deleteComment" onclick="commentDelete('<%=idx%>')"></td></tr>   
-    	<%
-    }
-
-%>
-</table>
-
-</div>
 </article>
 
 <script type="text/javascript">
